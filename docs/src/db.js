@@ -1648,7 +1648,7 @@ const LICENSE_PLANS = {
    "Upgrade to PREMIUM/VIP" prompt across the app. Number is in international
    format with no leading + or spaces (e.g. "62812xxxxxxx").
 --------------------------------------------------------------------------- */
-const LICENSE_CONTACT_WHATSAPP = "6281283277360";
+const LICENSE_CONTACT_WHATSAPP = "6281915968790";
 function licenseContactUrl(context) {
   const msg = encodeURIComponent(`Halo, saya tertarik upgrade PMMS ke PREMIUM/VIP${context ? ` (${context})` : ""}.`);
   return `https://wa.me/${LICENSE_CONTACT_WHATSAPP}?text=${msg}`;
