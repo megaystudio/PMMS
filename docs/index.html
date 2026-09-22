@@ -28,7 +28,8 @@
   </div>
 
   <div class="app-shell hidden" id="app-shell">
-    <aside class="sidebar">
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar">
       <div class="brand">
         <div class="brand-mark">M</div>
         <div>
@@ -76,6 +77,7 @@
 
     <main class="main">
       <header class="topbar">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle menu">☰</button>
         <div>
           <div class="breadcrumb">PMMS / <span id="breadcrumb">Dashboard</span></div>
           <h1 id="page-title">Maintenance Dashboard</h1>

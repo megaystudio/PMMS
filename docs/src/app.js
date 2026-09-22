@@ -53,8 +53,27 @@ function updateLicenseBadge() {
 }
 
 document.querySelectorAll(".nav-item").forEach(b =>
-  b.addEventListener("click", () => render(b.dataset.page))
+  b.addEventListener("click", () => { render(b.dataset.page); closeSidebar(); })
 );
+
+/* ---------------------------------------------------------------------------
+   MOBILE SIDEBAR toggle (hamburger ☰ button + backdrop). No-op on desktop
+   widths since the CSS only turns the sidebar into an off-canvas drawer
+   below 860px, but the open/close classes are harmless either way.
+--------------------------------------------------------------------------- */
+function openSidebar() {
+  document.getElementById("sidebar")?.classList.add("open");
+  document.getElementById("sidebar-backdrop")?.classList.add("show");
+}
+function closeSidebar() {
+  document.getElementById("sidebar")?.classList.remove("open");
+  document.getElementById("sidebar-backdrop")?.classList.remove("show");
+}
+document.getElementById("sidebar-toggle")?.addEventListener("click", () => {
+  const sb = document.getElementById("sidebar");
+  if (sb && sb.classList.contains("open")) closeSidebar(); else openSidebar();
+});
+document.getElementById("sidebar-backdrop")?.addEventListener("click", closeSidebar);
 
 document.getElementById("user-chip").addEventListener("click", () => {
   confirmDialog("Sign out of PMMS?", () => {

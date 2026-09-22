@@ -1,4 +1,33 @@
 *{box-sizing:border-box}html,body{margin:0;height:100%}body{font-family:Inter,Segoe UI,Arial,sans-serif;background:#f4f6f8;color:#1d2630}.app-shell{display:flex;height:100vh;overflow:hidden}.sidebar{width:255px;height:100vh;overflow-y:auto;background:#17202a;color:#dbe2e8;display:flex;flex-direction:column;flex-shrink:0}.brand{height:82px;padding:18px 20px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #2b3742;flex-shrink:0}.brand-mark{width:42px;height:42px;border-radius:10px;background:#f2c300;color:#17202a;font-weight:900;display:grid;place-items:center;font-size:22px}.brand-name{font-size:16px;font-weight:800;letter-spacing:2px}.brand-sub{font-size:11px;color:#91a0ad;letter-spacing:2px;margin-top:2px}.sidebar nav{padding:18px 12px;flex:1}.nav-section{font-size:10px;letter-spacing:1.5px;color:#6f7d88;margin:17px 10px 7px}.nav-item{width:100%;border:0;background:transparent;color:#bfc9d1;padding:11px 12px;border-radius:8px;text-align:left;display:flex;align-items:center;gap:11px;font-size:13px;cursor:pointer}.nav-item:hover{background:#24303c;color:#fff}.nav-item.active{background:#2c3945;color:#fff;border-left:3px solid #f2c300;padding-left:9px}.sidebar-footer{padding:15px 18px;border-top:1px solid #2b3742;display:flex;gap:9px;align-items:center;font-size:11px;flex-shrink:0}.offline-dot{width:9px;height:9px;border-radius:50%;background:#36b37e}.sidebar-footer small{display:block;color:#7f8d99;margin-top:3px}.main{flex:1;min-width:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}.topbar{height:96px;flex-shrink:0;background:#fff;border-bottom:1px solid #e3e7eb;padding:15px 28px;display:flex;align-items:center;justify-content:space-between}.breadcrumb{font-size:11px;color:#8b96a1;margin-bottom:3px}.breadcrumb span{color:#56616d}.topbar h1{font-size:20px;margin:0;font-weight:700}.topbar-right{display:flex;gap:12px;align-items:center}.build-badge{font-size:10px;font-weight:800;padding:7px 9px;border-radius:6px;background:#fff5c7;color:#705b00}.user-chip{font-size:12px;background:#f3f5f7;padding:8px 12px;border-radius:18px}.content{padding:28px;max-width:1500px;margin:0 auto;flex:1;overflow-y:auto}.grid{display:grid;gap:16px}.kpi-grid{grid-template-columns:repeat(4,1fr)}.card{background:#fff;border:1px solid #e3e7eb;border-radius:10px;padding:18px}.kpi-label{font-size:11px;color:#7d8893;text-transform:uppercase;letter-spacing:.6px}.kpi-value{font-size:27px;font-weight:800;margin:8px 0 3px}.kpi-note{font-size:11px;color:#7d8893}.section-title{font-size:14px;font-weight:700;margin:26px 0 12px}.two-col{grid-template-columns:1.35fr 1fr}.three-col{grid-template-columns:repeat(3,1fr)}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;font-size:12px}.table th{text-align:left;color:#7a8590;font-size:10px;text-transform:uppercase;letter-spacing:.5px;background:#f8f9fa}.table th,.table td{padding:11px 10px;border-bottom:1px solid #edf0f2}.status{display:inline-block;padding:4px 8px;border-radius:12px;font-size:10px;font-weight:700}.status.green{background:#e8f7f0;color:#14794f}.status.yellow{background:#fff5cf;color:#806800}.status.red{background:#fdeceb;color:#b33a35}.bar-row{margin:13px 0}.bar-head{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px}.bar{height:8px;background:#edf0f2;border-radius:5px;overflow:hidden}.bar>i{display:block;height:100%;background:#2f3b47;border-radius:5px}.empty{padding:45px 20px;text-align:center;color:#87929d}.page-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.button{border:0;border-radius:7px;padding:9px 13px;background:#1f2b36;color:#fff;font-size:12px;cursor:pointer}.button.primary{background:#f2c300;color:#1c242b;font-weight:700}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field label{display:block;font-size:11px;color:#6f7b86;margin-bottom:6px}.field input,.field select{width:100%;padding:9px;border:1px solid #dfe4e8;border-radius:6px;background:#fff}.notice{padding:12px 14px;background:#fff9dc;border:1px solid #f0df83;border-radius:8px;font-size:12px;color:#675700}.module-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.module{padding:16px;border:1px solid #e4e8eb;border-radius:8px;background:#fff}.module strong{display:block;margin-bottom:5px;font-size:13px}.module span{font-size:11px;color:#7b8792}@media(max-width:1000px){.sidebar{width:210px}.kpi-grid{grid-template-columns:repeat(2,1fr)}.two-col,.three-col,.module-list{grid-template-columns:1fr}}
+
+/* ---------------------------------------------------------------------------
+   MOBILE SIDEBAR (hide/unhide)
+   Below 860px the sidebar becomes an off-canvas drawer: hidden by default,
+   slid in over the content when the hamburger button is tapped, with a
+   dimmed backdrop to close it. Above 860px this block has no effect.
+--------------------------------------------------------------------------- */
+.sidebar-toggle{display:none;border:0;background:transparent;color:#1d2630;font-size:22px;line-height:1;padding:6px 10px 6px 0;cursor:pointer;flex-shrink:0}
+.sidebar-backdrop{display:none}
+@media(max-width:860px){
+  .sidebar-toggle{display:inline-flex;align-items:center}
+  .app-shell{position:relative}
+  .sidebar{position:fixed;top:0;left:0;width:270px;max-width:82vw;z-index:1001;transform:translateX(-100%);transition:transform .25s ease;box-shadow:4px 0 24px rgba(0,0,0,.28)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-backdrop{display:block;position:fixed;inset:0;background:rgba(10,14,18,.5);z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .sidebar-backdrop.show{opacity:1;pointer-events:auto}
+  .main{width:100%}
+  .topbar{height:auto;padding:12px 14px;flex-wrap:wrap;row-gap:10px;align-items:flex-start}
+  .topbar h1{font-size:17px}
+  .topbar-right{width:100%;flex-wrap:wrap;gap:8px}
+  .global-search{order:1;width:100%}
+  .build-badge,.license-badge,.user-chip{order:2}
+  .content{padding:14px}
+  .form-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .kpi-grid{grid-template-columns:1fr}
+}
 /* ===== Build 02 additions ===== */
 .license-badge{font-size:10px;font-weight:800;padding:7px 9px;border-radius:6px;background:#e7f0ff;color:#1d4fa0;letter-spacing:.5px}
 .status.blue{background:#e7f0ff;color:#1d4fa0}
@@ -75,7 +104,7 @@ textarea{width:100%;padding:9px;border:1px solid #dfe4e8;border-radius:6px;font-
 
 /* ===== Build 03 additions ===== */
 @media print {
-  .sidebar, .topbar, .page-head button, .page-head select, #export-csv, #print-report { display: none !important; }
+  .sidebar, .sidebar-backdrop, .topbar, .page-head button, .page-head select, #export-csv, #print-report { display: none !important; }
   html, body { height: auto !important; }
   .app-shell { display: block; height: auto !important; overflow: visible !important; }
   .main { width: 100%; height: auto !important; overflow: visible !important; display: block !important; }
