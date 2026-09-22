@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PMMS — Build 15</title>
   <link rel="stylesheet" href="src/styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#17202a">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 </head>
 <body>
   <div class="login-shell hidden" id="login-shell">
@@ -65,6 +69,9 @@
           <small>Local database</small>
         </div>
       </div>
+      <div class="sidebar-footer" id="install-app-row" style="display:none">
+        <button class="button primary" id="install-app-btn" style="width:100%">⬇ Install App</button>
+      </div>
     </aside>
 
     <main class="main">
@@ -103,5 +110,39 @@
   <script src="src/pages-settings.js"></script>
   <script src="src/global-search.js"></script>
   <script src="src/app.js"></script>
+  <script>
+    // Service worker: enables offline use and lets the browser offer
+    // "Install app". Safe no-op in browsers that don't support it.
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch((err) =>
+          console.warn("PMMS: service worker registration failed.", err)
+        );
+      });
+    }
+
+    // Custom "Install App" button in the sidebar. Chrome/Edge/Android fire
+    // beforeinstallprompt when the PWA criteria are met; we stash the event
+    // and trigger it from our own button instead of waiting for the
+    // browser's own (easy-to-miss) address-bar icon.
+    let deferredInstallPrompt = null;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const row = document.getElementById("install-app-row");
+      if (row) row.style.display = "flex";
+    });
+    document.getElementById("install-app-btn")?.addEventListener("click", async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      document.getElementById("install-app-row").style.display = "none";
+    });
+    window.addEventListener("appinstalled", () => {
+      const row = document.getElementById("install-app-row");
+      if (row) row.style.display = "none";
+    });
+  </script>
 </body>
 </html>
