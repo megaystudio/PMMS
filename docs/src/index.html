@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMMS — Build 15</title>
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#17202a">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head>
+<body>
+  <div class="login-shell hidden" id="login-shell">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="brand-mark">M</div>
+        <div><strong>MEGAY PMMS</strong><small>Sign in to continue</small></div>
+      </div>
+      <div id="login-error"></div>
+      <form id="login-form">
+        <div class="field"><label>Username</label><input id="login-username" autocomplete="username" required></div>
+        <div class="field"><label>Password</label><input id="login-password" type="password" autocomplete="current-password" required></div>
+        <button type="submit" class="button primary" id="login-submit">Sign In</button>
+      </form>
+      <div class="login-hint">First time on this installation? Default account is <b>admin</b> / <b>admin123</b> — you'll be asked to set a new password right after signing in.</div>
+    </div>
+  </div>
+
+  <div class="app-shell hidden" id="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div>
+          <div class="brand-name">MEGAY</div>
+          <div class="brand-sub">PMMS</div>
+        </div>
+      </div>
+
+      <nav>
+        <div class="nav-section">MAIN</div>
+        <button class="nav-item active" data-page="dashboard">▦ <span>Dashboard</span></button>
+        <button class="nav-item" data-page="analytics">📈 <span>Analytics</span></button>
+        <button class="nav-item" data-page="rca">🔧 <span>RCA & Improvement</span></button>
+        <button class="nav-item" data-page="abnormalities">⚠ <span>Abnormality</span></button>
+        <button class="nav-item" data-page="reports">▤ <span>Reports</span></button>
+        <button class="nav-item" data-page="activity-log">▥ <span>Activity Log</span></button>
+
+        <div class="nav-section">MASTER DATA</div>
+        <button class="nav-item" data-page="assets">▣ <span>Asset Management</span></button>
+        <button class="nav-item" data-page="pm-master">⚙ <span>Maintenance Master</span></button>
+        <button class="nav-item" data-page="pm-plan">□ <span>PM Planning</span></button>
+        <button class="nav-item" data-page="spare-parts">◈ <span>Spare Parts</span></button>
+        <button class="nav-item" data-page="technicians">◍ <span>Technicians</span></button>
+
+        <div class="nav-section">FACT (TRANSACTION)</div>
+        <button class="nav-item" data-page="schedule">◷ <span>PM Schedule</span></button>
+        <button class="nav-item" data-page="work-orders">✓ <span>Work Orders</span></button>
+        <button class="nav-item" data-page="breakdowns">⛔ <span>Breakdown</span></button>
+
+        <div class="nav-section">SETTINGS</div>
+        <button class="nav-item" data-page="settings">⚙ <span>Settings</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="offline-dot"></div>
+        <div>
+          <strong>OFFLINE MODE</strong>
+          <small>Local database</small>
+        </div>
+      </div>
+      <div class="sidebar-footer" id="install-app-row" style="display:none">
+        <button class="button primary" id="install-app-btn" style="width:100%">⬇ Install App</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumb">PMMS / <span id="breadcrumb">Dashboard</span></div>
+          <h1 id="page-title">Maintenance Dashboard</h1>
+          <div class="company-strip" id="company-strip"></div>
+        </div>
+        <div class="topbar-right">
+          <div class="global-search" id="global-search-wrap">
+            <input id="global-search" placeholder="Search assets, technicians, WO, spare parts…" autocomplete="off">
+            <div id="global-search-results" class="global-search-results hidden"></div>
+          </div>
+          <span class="build-badge">BUILD 15</span>
+          <span class="license-badge" id="license-badge">DEMO</span>
+          <div class="user-chip" id="user-chip" title="Click to sign out" style="cursor:pointer">Administrator</div>
+        </div>
+      </header>
+
+      <section id="content" class="content"></section>
+    </main>
+  </div>
+
+  <script src="src/db.js"></script>
+  <script src="src/ui.js"></script>
+  <script src="src/pages-dashboard-assets.js"></script>
+  <script src="src/pages-pmcore.js"></script>
+  <script src="src/pages-workorder.js"></script>
+  <script src="src/charts.js"></script>
+  <script src="src/pages-analytics.js"></script>
+  <script src="src/pages-rca.js"></script>
+  <script src="src/pages-masters.js"></script>
+  <script src="src/pages-reports.js"></script>
+  <script src="src/pages-activitylog.js"></script>
+  <script src="src/pages-settings.js"></script>
+  <script src="src/global-search.js"></script>
+  <script src="src/app.js"></script>
+  <script>
+    // Service worker: enables offline use and lets the browser offer
+    // "Install app". Safe no-op in browsers that don't support it.
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch((err) =>
+          console.warn("PMMS: service worker registration failed.", err)
+        );
+      });
+    }
+
+    // Custom "Install App" button in the sidebar. Chrome/Edge/Android fire
+    // beforeinstallprompt when the PWA criteria are met; we stash the event
+    // and trigger it from our own button instead of waiting for the
+    // browser's own (easy-to-miss) address-bar icon.
+    let deferredInstallPrompt = null;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const row = document.getElementById("install-app-row");
+      if (row) row.style.display = "flex";
+    });
+    document.getElementById("install-app-btn")?.addEventListener("click", async () => {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      document.getElementById("install-app-row").style.display = "none";
+    });
+    window.addEventListener("appinstalled", () => {
+      const row = document.getElementById("install-app-row");
+      if (row) row.style.display = "none";
+    });
+  </script>
+</body>
+</html>
