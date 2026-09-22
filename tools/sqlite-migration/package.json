@@ -1,0 +1,10 @@
+{
+  "name": "pmms-sqlite-migration",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Converts a PMMS backup JSON file into a real SQLite database file.",
+  "main": "backup-to-sqlite.js",
+  "dependencies": {
+    "sql.js": "^1.11.0"
+  }
+}
